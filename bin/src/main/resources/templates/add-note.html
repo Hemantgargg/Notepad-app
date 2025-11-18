@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Note</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background: #2563eb;
+      color: white;
+      padding: 16px 20px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    label {
+      font-size: 14px;
+      color: #374151;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      height: 140px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-back {
+      background: #6b7280;
+      margin-right: 10px;
+    }
+
+    .btn:active { transform: translateY(1px); }
+  </style>
+
+  <script>
+    async function saveNote(event) {
+      event.preventDefault();
+
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+        alert("Please login first.");
+        window.location = "/login";
+        return;
+      }
+
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+
+      await fetch(`/notes/add?userId=${userId}&title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`, {
+        method: "POST"
+      });
+
+      window.location = "/notes"; // redirect to notes page
+    }
+  </script>
+  <script>
+  function logout() {
+    localStorage.removeItem("userId");
+    // If you want to clear all stored keys
+    // localStorage.clear();
+    window.location = "/login";
+  }
+</script>
+<script>
+  // Run on pages that should require login
+  window.addEventListener('load', () => {
+    const uid = localStorage.getItem('userId');
+    if (!uid) {
+      // not logged in — go to login page
+      window.location = '/login';
+    }
+  });
+</script>
+
+</head>
+
+<body>
+
+<div style="background:#2563eb;color:white;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
+  <div style="font-weight:600;font-size:18px;">Notepad</div>
+  <div>
+    <a href="/notes" style="color:white;margin-right:12px;text-decoration:none;font-weight:600;">Notes</a>
+    <a href="/add-note" style="color:white;margin-right:12px;text-decoration:none;font-weight:600;">Add</a>
+    <button onclick="logout()" style="background:#ef4444;border:none;padding:8px 12px;border-radius:6px;color:white;font-weight:600;cursor:pointer;">Logout</button>
+  </div>
+</div>
+
+  <div class="header">Add New Note</div>
+
+  <div class="container">
+    <form onsubmit="saveNote(event)">
+      <label>Title</label>
+      <input id="title" type="text" placeholder="Note title" required />
+
+      <label>Content</label>
+      <textarea id="content" placeholder="Write your note..." required></textarea>
+
+      <button class="btn-back btn" type="button" onclick="window.location='/notes'">Back</button>
+      <button class="btn" type="submit">Save Note</button>
+    </form>
+  </div>
+
+</body>
+</html>

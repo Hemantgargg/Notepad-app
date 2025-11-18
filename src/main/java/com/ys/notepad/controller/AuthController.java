@@ -2,13 +2,14 @@ package com.ys.notepad.controller;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.ys.notepad.model.User;
 import com.ys.notepad.service.UserService;
     
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 @CrossOrigin("*")
 public class AuthController {
@@ -20,14 +21,15 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestParam String email, @RequestParam String password) {
-        try {
-            User user = userService.signup(email, password);
-            return ResponseEntity.ok("Signup successful! User ID: " + user.getId());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+public String signup(@RequestParam String email, @RequestParam String password) {
+    try {
+        userService.signup(email, password);
+        return "redirect:/login";     // 🔥 Redirect to login page
+    } catch (IllegalArgumentException e) {
+        return "redirect:/signup?error=" + e.getMessage();
     }
+}
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
