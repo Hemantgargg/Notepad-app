@@ -93,10 +93,29 @@
       window.location = "/notes"; // redirect to notes page
     }
   </script>
+  <script>
+  function logout() {
+    localStorage.removeItem("userId");
+    // If you want to clear all stored keys
+    // localStorage.clear();
+    window.location = "/login";
+  }
+</script>
+<script>
+  // Run on pages that should require login
+  window.addEventListener('load', () => {
+    const uid = localStorage.getItem('userId');
+    if (!uid) {
+      // not logged in — go to login page
+      window.location = '/login';
+    }
+  });
+</script>
+
 </head>
 
 <body>
-<!-- Put this at top of body on notes.html and add-note.html -->
+
 <div style="background:#2563eb;color:white;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;">
   <div style="font-weight:600;font-size:18px;">Notepad</div>
   <div>
