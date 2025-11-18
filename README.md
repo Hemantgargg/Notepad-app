@@ -92,6 +92,7 @@ notepad-app/
 ├── pom.xml
 └── README.md
 
+
 🧩 Database Schema
 User Table
 CREATE TABLE users (
