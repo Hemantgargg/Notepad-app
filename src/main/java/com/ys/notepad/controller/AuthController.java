@@ -3,9 +3,12 @@ package com.ys.notepad.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.ys.notepad.model.Note;
 import com.ys.notepad.model.User;
+import com.ys.notepad.repository.NoteRepository;
 import com.ys.notepad.service.UserService;
     
 
@@ -15,9 +18,11 @@ import com.ys.notepad.service.UserService;
 public class AuthController {
 
     private final UserService userService;
+    private final NoteRepository noteRepository;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, NoteRepository noteRepository) {
         this.userService = userService;
+        this.noteRepository = noteRepository;
     }
 
     @PostMapping("/signup")
@@ -47,5 +52,7 @@ public ResponseEntity<?> getUserId(@RequestParam String email) {
     if (user == null) return ResponseEntity.badRequest().body("0");
     return ResponseEntity.ok(user.getId());
 }
+
+
 
 }

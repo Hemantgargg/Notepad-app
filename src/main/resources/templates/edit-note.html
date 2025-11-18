@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Edit Note</title>
+
+   <style>
+    body {
+        font-family: system-ui, Arial, sans-serif;
+        background: #f3f4f6;
+        margin: 0;
+        height: 100vh;                    /* Full screen height */
+        display: flex;                    /* Flexbox center */
+        justify-content: center;          /* horizontal */
+        align-items: center;              /* vertical */
+    }
+
+    .card {
+        width: 480px;
+        background: white;
+        padding: 34px;
+        border-radius: 14px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+        animation: fadeIn 0.3s ease;      /* smooth UI */
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 22px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #475569;
+        font-size: 14px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 16px;
+        border: 1px solid #d0d7de;
+        border-radius: 10px;
+        font-size: 15px;
+        background: #f8fafc;
+        transition: border 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #2563eb;
+        outline: none;
+        background: white;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 12px;
+        color: #2563eb;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</head>
+<body>
+
+<div class="card">
+    <h2>Edit Note</h2>
+
+    <form th:action="@{/notes/update}" method="post">
+        <input type="hidden" name="id" th:value="${note.id}" />
+
+        <label>Title</label>
+        <input type="text" name="title" th:value="${note.title}" required />
+
+        <label>Content</label>
+        <textarea name="content" rows="6" required th:text="${note.content}"></textarea>
+
+        <button class="btn">Save Changes</button>
+    </form>
+
+    <a class="back-link" href="/notes">← Back to Notes</a>
+
+</div>
+
+</body>
+</html>
